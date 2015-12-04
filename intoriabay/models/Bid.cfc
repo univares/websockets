@@ -1,5 +1,32 @@
-component extends="Model" accessors=true output=false persistent=false {
+component extends="Model" {
 	function init() {
-		belongsTo("Auction");
+		// watch for case
+		belongsTo("auction");
+		belongsTo("customer");
+
+		validatesFormatOf(property="amount", regEx="^-?(?:0|[1-9]\d{0,2}(?:,?\d{3})*)(?:\.\d+)?$");
+
+		validate(property="amount", when="onCreate", method="ValidateAmount");
+		afterCreate("NotifyChannel");
+	}
+
+	function ValidateAmount() {
+		max_bid = model("Auction").findAll(
+			select="MAX(bids.amount) + minimumincrement as maxbidprice",
+			where="auctionid=1",
+			include="bids"
+		);
+
+		if (this.amount < max_bid.maxbidprice) {
+			WriteLog(text="failed to add new bid, price #this.amount# below max price of #max_bid.maxbidprice#", type="Information", file="socket");
+			addError(property="amount", message="Amount below max bid price. Bid should be #max_bid.maxbidprice# or greater");
+		}
+		return true;
+	}
+
+	function NotifyChannel() {
+		auction = model("Auction").FindByKey(key=this.auctionid);
+		channel = auction.socketchannel;
+		wsPublish(auction.socketchannel, lcase(serializeJSON(this)));
 	}
 }

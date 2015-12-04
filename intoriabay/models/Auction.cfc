@@ -1,5 +1,6 @@
-component extends="Model" accessors=true output=false persistent=false {
+component extends="Model" {
 	function init() {
-		hasMany("Bid");
+		// watch for case
+		hasMany("bids");
 	}
 }

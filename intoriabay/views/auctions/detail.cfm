@@ -8,7 +8,7 @@
 			<div class="col-md-12">
 				<p>#auction.description#</p>
 
-				<div class="well" style="max-width:400px;">
+				<div class="well" style="max-width:500px;">
 					<p>Current bid:
 						$<span class="price">
 							<cfif IsDefined("auction.maxbidprice") AND IsNumeric(auction.maxbidprice) AND auction.maxbidprice NEQ 0>
@@ -18,17 +18,41 @@
 							</cfif>
 						</span>
 					</p>
+
+					<cfif len(flash('error'))>
+					<div class="alert alert-danger" role="alert"><strong>Error!</strong> #flash("error")#</div>
+					</cfif>
+					<cfif len(flash('success'))>
+					<div class="alert alert-success" role="alert"><strong>Congratulation!</strong> #flash("success")#</div>
+					</cfif>
+
 					#startFormTag(route="auction_bid", auctionid="#params.auctionid#")#
-					<div class="input-group">
-					  <span class="input-group-addon">$</span>
-					  <input type="text" class="form-control" placeholder="price">
-					</div>
-					<div style="padding-top: 7px;">
-						<button type="button" class="btn btn-default">Bid</button>
-					</div>
+						<div class="input-group">
+						  <span class="input-group-addon">$</span>
+						  #textField(label="", objectName="bid", property="amount", class="form-control", autofocus=True, placeholder="price")#
+						</div>
+						<div style="padding-top: 7px;">
+							<button class="btn btn-default" type="submit">Bid</button>
+						</div>
 					#endFormTag()#
 				</div>
 			</div>
 		</div>
     </div>
+
+	<!--- add socket listener --->
+	<cfwebsocket name="mysock" onmessage="bidHandler" subscribeto="#auction.socketchannel#"/>
+
+	<script type="text/javascript">
+		function bidHandler(message){
+			json = ColdFusion.JSON.encode(message.data);
+			var response=jQuery.parseJSON(json);
+			if (typeof response == 'object') {
+				console.log(response);
+				console.log(response.amount);
+
+				$('.price').text(response['amount']);
+			}
+		}
+	</script>
 </cfoutput>

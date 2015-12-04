@@ -4,4 +4,5 @@
 	*/
 	// set(dataSourceName="intoriabay");
 	this.name = "intoriabay";
+	set(errorEmailAddress = "lfabbric@gmail.com");
 </cfscript>

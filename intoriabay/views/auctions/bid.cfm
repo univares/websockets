@@ -1,5 +1,9 @@
 <cfoutput>
     <div class="row">
-        bid
+        <cfscript>
+			for (error in bid.allErrors()) {
+				WriteDump(error);
+			}
+		</cfscript>
     </div>
 </cfoutput>
