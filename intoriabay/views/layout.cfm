@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="intoriabay">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,7 +14,9 @@
 
 	<!-- Latest compiled and minified CSS -->
 	<!---link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"--->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 	<cfoutput>
+		#javaScriptIncludeTag("app.js")#
 		#styleSheetLinkTag("bootstrap.min.css")#
 		#styleSheetLinkTag("theme.css")#
 	</cfoutput>
@@ -40,7 +42,7 @@
           <ul class="nav navbar-nav">
 			<li class="active"><cfoutput>#linkTo(text="Home", route="home")#</cfoutput></li>
 			<cfif StructKeyExists(session, "user")>
-				<li><cfoutput>#linkTo(text="Auctions", Controller="Auctions", action="list")#</cfoutput></li>
+				<li><cfoutput>#linkTo(text="Auctions", route="auction_list")#</cfoutput></li>
 				<li><cfoutput>#linkTo(text="Logout", controller="Customer", action="logout")#</cfoutput></li>
 	            <li><a href="http://dealers.meridianmfg.com">Chat Example</a></li>
 			<cfelse>

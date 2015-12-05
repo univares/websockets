@@ -12,7 +12,7 @@ component extends="Controller" accessors=true output=false persistent=false {
 			pw = "#params.customer.password#";
 			if (BCrypt.checkpw(pw, user.password)) {
 				session.user.id = user.id;
-				redirectTo(controller="Auctions", action="list");
+				redirectTo(route="auction_list");
 			} else {
 				flashInsert(error="Invalid credentials");
 				error = True;

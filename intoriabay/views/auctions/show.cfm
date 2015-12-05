@@ -1,4 +1,10 @@
 <cfoutput>
+	<div id="auction_ctrl" ng-controller="AuctionItemCntl">
+		<auction-full-card element="auction"></auction-full-card>
+	</div>
+
+
+
     <div class="row">
 		<div class="col-md-3">
 			#imageTag(source='#auction.id#.jpg', height="200", width="200")#
@@ -19,12 +25,8 @@
 						</span>
 					</p>
 
-					<cfif len(flash('error'))>
-					<div class="alert alert-danger" role="alert"><strong>Error!</strong> #flash("error")#</div>
-					</cfif>
-					<cfif len(flash('success'))>
-					<div class="alert alert-success" role="alert"><strong>Congratulation!</strong> #flash("success")#</div>
-					</cfif>
+					<cfif len(flash('error'))><div class="alert alert-danger" role="alert"><strong>Error!</strong> #flash("error")#</div></cfif>
+					<cfif len(flash('success'))><div class="alert alert-success" role="alert"><strong>Congratulation!</strong> #flash("success")#</div></cfif>
 
 					#startFormTag(route="auction_bid", auctionid="#params.auctionid#")#
 						<div class="input-group">
@@ -42,17 +44,5 @@
 
 	<!--- add socket listener --->
 	<cfwebsocket name="mysock" onmessage="bidHandler" subscribeto="#auction.socketchannel#"/>
-
-	<script type="text/javascript">
-		function bidHandler(message){
-			json = ColdFusion.JSON.encode(message.data);
-			var response=jQuery.parseJSON(json);
-			if (typeof response == 'object') {
-				console.log(response);
-				console.log(response.amount);
-
-				$('.price').text(response['amount']);
-			}
-		}
-	</script>
+	#javaScriptIncludeTag("auctions/detail.js")#
 </cfoutput>
