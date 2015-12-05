@@ -27,6 +27,10 @@ component extends="Model" {
 	function NotifyChannel() {
 		auction = model("Auction").FindByKey(key=this.auctionid);
 		channel = auction.socketchannel;
+		// notify the page that the bid has changed
 		wsPublish(auction.socketchannel, lcase(serializeJSON(this)));
+
+		// notify the list that the bid item has changed
+		wsPublish('auction_list', lcase(serializeJSON(this)));
 	}
 }

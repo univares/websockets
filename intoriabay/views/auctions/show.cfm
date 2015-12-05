@@ -1,10 +1,5 @@
 <cfoutput>
-	<div id="auction_ctrl" ng-controller="AuctionItemCntl">
-		<auction-full-card element="auction"></auction-full-card>
-	</div>
-
-
-
+	<!--- No angularjs approach--->
     <div class="row">
 		<div class="col-md-3">
 			#imageTag(source='#auction.id#.jpg', height="200", width="200")#
